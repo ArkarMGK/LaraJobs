@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\JobListController;
 
 /*
@@ -14,4 +15,6 @@ use App\Http\Controllers\JobListController;
 |
 */
 
-Route::get('/', [JobListController::class, 'index']);
+Route::get('/', [JobListController::class, 'index'])->name('home');
+
+Route::get('/ajax/filterTags', [AjaxController::class, 'index'])->name('filerTags');

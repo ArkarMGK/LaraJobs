@@ -3,17 +3,26 @@
 @include('../partials/_nav')
 @include('../partials/_hero_job')
 @section('content')
+    <div class="col-3 px-4 fixed-top offset-9 mt-5">
+        {{-- <button class="btn btn-outline-info text-secondary me-4">Hire a Consultant</button> --}}
+        <a href="{{ route('createJob') }}">
+            <button class="btn btn-outline-primary">Post a job</button>
+        </a>
+
+    </div>
     <div class="container-fluid">
-        <div class="d-flex justify-content-center">
-            <div class="col-6">
+        <div class="d-flex justify-content-center px-2">
+            <div class="col-md-6">
+                <!--FILTER BY TAGS-->
                 <div class="row d-flex">
                     <div class="col-10"></div>
                     <div class="col-2">
                         @php
-                            $allTags = explode(',', $allTags['tags']);
+                            $allTags = explode(',', $allTags);
                         @endphp
                         <form action="/" method="GET">
-                            <select class="form-select" aria-label="form-select-lg example" name="tags" id="searchByTags">
+                            <select class="form-select" aria-label="form-select-lg example" name="tags"
+                                id="searchByTags">
                                 <option selected>Filter</option>
                                 <option value="all">All Jobs</option>
                                 @foreach ($allTags as $tag)
@@ -23,6 +32,7 @@
                         </form>
                     </div>
                 </div>
+                <!--JOB LIST-->
                 <div id="jobList">
                     @foreach ($jobs as $job)
                         <div class="row my-4 border border-2  border-opacity-50 rounded p-4">
@@ -65,9 +75,19 @@
                         </div>
                     @endforeach
                 </div>
+
+                <!--All Tags-->
+                <div>
+                    @foreach ($allTags as $tag)
+                        <button value="{{ $tag }}" style="background:#ddd" class="px-3 py-2 mt-4 border-0 me-4">{{ $tag }}</button>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
+@endsection
+@section('footer')
+    @include('../partials/_footer')
 @endsection
 @section('script')
     <script>
@@ -93,8 +113,8 @@
                             $tags = response[$i].tags.split(',');
                             console.log($tags);
                             $tagList = '';
-                            for($j=0; $j<$tags.length;$j++){
-                                $tagList +=  `
+                            for ($j = 0; $j < $tags.length; $j++) {
+                                $tagList += `
                                 <button class="btn btn-outline-dark my-1">
                                     ${ $tags[$j] }
                                 </button>

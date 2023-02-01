@@ -13,8 +13,7 @@ class Tags extends Model
     // ];
 
     public static function allTags(){
-        return [
-            'tags' => 'Laravel,PHP,VueJS,Fullstack,API,TailwindCSS,JavaScript,Backend,Git,AWS,TALL Stack,Frontend,Engineer,Craft CMS,Lead,Livewire,MySQL,React,Senior,SQL,AlpineJS',
-        ];
+        return
+            'Laravel,PHP,VueJS,Fullstack,API,TailwindCSS,JavaScript,Backend,Git,AWS,TALL Stack,Frontend,Engineer,Craft CMS,Lead,Livewire,MySQL,React,Senior,SQL,AlpineJS';
     }
 }

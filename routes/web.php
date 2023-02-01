@@ -17,4 +17,8 @@ use App\Http\Controllers\JobListController;
 
 Route::get('/', [JobListController::class, 'index'])->name('home');
 
+Route::get('/create',[JobListController::class, 'create'])->name('createJob');
+
+Route::post('/crateJob', [JobListController::class, 'store'])->name('storeJob');
+
 Route::get('/ajax/filterTags', [AjaxController::class, 'index'])->name('filerTags');

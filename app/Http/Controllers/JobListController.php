@@ -18,4 +18,14 @@ class JobListController extends Controller
         // dd($allTags['tags']);
         return view('index',compact('jobs','allTags'));
     }
+
+    public function create(){
+        $allTags = Tags::allTags();
+        // dd($allTags);
+        return view('create',compact('allTags'));
+    }
+
+    public function store(Request $request){
+        dd($request->all());
+    }
 }

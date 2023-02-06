@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table-> string('title');
             $table-> integer('company_id')->nullable();
+            $table-> integer('user_id');
             $table-> longText('description');
             $table-> string('tags');
             $table-> string('job_location');

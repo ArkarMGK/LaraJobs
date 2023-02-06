@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobListController;
+use App\Http\Controllers\admin\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +24,24 @@ Route::get('/create',[JobListController::class, 'create'])->name('createJob');
 Route::post('/crateJob', [JobListController::class, 'store'])->name('storeJob');
 
 Route::get('/ajax/filterTags', [AjaxController::class, 'index'])->name('filerTags');
+
+Route::get('/admin', [AdminController::class, 'login'])->name('admin#login');
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+
+    //  After authentication , users are redirected to specific dashboards based on role(user or admin)
+    //  admin will have both access to user site and admin dashboard
+    Route::get('authenticate', [AuthController::class, 'authenticate']);
+
+    // User dashboard
+    Route::get('account',[JobListController::class, 'dashboard'])->name('dashboard');
+
+    // Admin dashboard routes
+    Route::group(['prefix'=>'admin','middleware'=>'adminAuth'],function () {
+        Route::get('dashboard', [AdminController::class, 'dashboard'])->name('admin#dashboard');
+    });
+});

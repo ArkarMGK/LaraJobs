@@ -6,12 +6,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav col-md-12">
-                <a class="text-info col-md-4 text-md-center pt-2 fs-1 text-decoration-none" href="{{route('home')}}">Larajobs</a>
+                <a class="text-info col-md-4 text-md-center pt-2 fs-1 text-decoration-none"
+                    href="{{ route('home') }}">Larajobs</a>
                 <div class="col-md-4 d-md-flex justify-content-around fs-5 pt-md-3">
                     <a class="nav-link" href="#">Jobs</a>
                     <a class="nav-link" href="#">Consultants</a>
                     <a class="nav-link" href="#">Twitter</a>
-                    <a class="nav-link" href="#">Login</a>
+                    @if (Auth::user())
+                        <a class="nav-link" href="{{ route('dashboard')}}">My Account</a>
+                    @else
+                        <a class="nav-link" href="{{ route('login') }}">Login</a>
+                    @endif
                 </div>
             </div>
         </div>

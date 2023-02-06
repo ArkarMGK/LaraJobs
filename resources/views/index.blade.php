@@ -20,7 +20,7 @@
                         @php
                             $allTags = explode(',', $allTags);
                         @endphp
-                        <form action="/" method="GET">
+                        <form action="{{route('home')}}" method="GET">
                             <select class="form-select" aria-label="form-select-lg example" name="tags"
                                 id="searchByTags">
                                 <option selected>Filter</option>

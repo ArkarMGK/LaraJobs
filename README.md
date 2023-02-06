@@ -14,7 +14,10 @@ php artisan db:seed
 
 php artisan serve
 
+#Note
+After database seeding, two user accounts (admin and testuser) are already provided
+Use 'localhost:8000/admin' to log in as admin.
 
 ## License
 
-The LaraGigs app is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The LaraJobs app is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

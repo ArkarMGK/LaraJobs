@@ -8,7 +8,7 @@
             <div class="col-8 mt-4">
                 <div class="row">
                     <div class="col-md-8 col-6">
-                        <a href="" class="text-decoration-none text-dark">My Account</a>
+                        <a href="{{route('dashboard')}}" class="text-decoration-none text-dark">My Account</a>
                         <a href="" class="text-decoration-none text-dark">Order history</a>
                     </div>
                     <div class="col-md-4 col-6">

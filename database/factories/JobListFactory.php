@@ -28,11 +28,11 @@ class JobListFactory extends Factory
 
         return [
             'title' => $this->faker->sentence(5),
-            'description' => $this->faker->paragraph(5),
             'tags' => $tag,
             'company_id' => rand(1,10),
             'user_id' => rand(1,2),
             'job_location' => $this->faker->city(),
+            'job_url' => $this->faker->url(),
             'employment_type' => $employment_type[$employment],
             'salary' => (round( $this->faker->numberBetween(40000, 100000)/100))*100,
             'available' => rand('1','0'),

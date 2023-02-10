@@ -18,12 +18,12 @@ return new class extends Migration
             $table-> string('title');
             $table-> integer('company_id')->nullable();
             $table-> integer('user_id');
-            $table-> longText('description');
             $table-> string('tags');
             $table-> string('job_location');
+            $table-> string('job_url');
             $table-> string('employment_type');
-            $table-> integer('salary');
-            $table-> boolean('available');
+            $table-> integer('salary')->nullable();
+            $table-> boolean('available')->default('1');
             $table-> timestamps();
         });
     }

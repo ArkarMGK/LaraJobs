@@ -4,25 +4,54 @@
 @section('content')
     <div class="container-fluid mt-4">
         <div class="d-flex justify-content-center">
-            <div class="col-8">
+            <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-8 mb-4">
+                        @unless(Auth::user())
+                            <form action="{{ route('login') }}" method="POST">
+                                @csrf
+                                <div class="mx-1 row p-2 rounded" style="background:#eee">
+                                    <div class="col-sm-5 col-12 my-1">
+                                        <input type="email" name="email" value="{{ old('email') }}" class="p-2 w-100"
+                                            placeholder="email">
+                                    </div>
+                                    <div class="col-sm-5 col-12 my-1">
+                                        <input type="password" name="password" class="p-2 w-100" placeholder="password">
+                                    </div>
+                                    <div class="col-sm-2 col-8 my-1">
+                                        <input type="submit" class="btn btn-outline-danger p-2 px-3 w-100" value="Login">
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="d-flex justify-content-between mb-4">
+                                @if (Route::has('password.request'))
+                                    <a class="text-decoration-none" href="{{ route('password.request') }}">
+                                        {{ __('Forgot your password?') }}
+                                    </a>
+                                @endif
+
+                                <a class="text-muted" href="#register">No account? We'll set one up below.</a>
+                            </div>
+                        @endunless
                         <form method="POST" action="{{ route('storeJob') }}">
                             @csrf
                             <div class="mb-3">
                                 <label for="jobTitle" class="form-label">Job Title</label>
-                                <input type="text" class="form-control" id="jobTitle" name="jobTitle">
+                                <input type="text" class="form-control" id="jobTitle" name="jobTitle"
+                                    value="{{ old('jobTitle') }}">
                                 <div class="form-text">Example: "Senior Laravel Developer", "Software Engineer"</div>
                             </div>
                             <div class="mb-3">
                                 <label for="jobLocation" class="form-label">Job Location</label>
-                                <input type="text" class="form-control" id="jobLocation" name="jobLocation">
+                                <input type="text" class="form-control" id="jobLocation" name="jobLocation"
+                                    value="{{ old('jobLocation') }}">
                                 <div class="form-text">Example: "Remote", "Remote / USA", "New York City", "Remote GMT-5",
                                     etc.</div>
                             </div>
                             <div class="mb-3">
                                 <label for="jobUrl" class="form-label">URL to Description/Application</label>
-                                <input type="text" class="form-control" id="jobUrl" name="jobUrl">
+                                <input type="text" class="form-control" id="jobUrl" name="jobUrl"
+                                    value="{{ old('jobUrl') }}">
                                 <div class="form-text">https://yourcompany.com/careers</div>
                             </div>
                             <div class="mb-3">
@@ -36,7 +65,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="companyName" class="form-label">Company Name</label>
-                                <input type="text" class="form-control" id="companyName" name="companyName">
+                                <input type="text" class="form-control" id="companyName" name="companyName"
+                                    value="{{ old('companyName') }}">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Company Logo</label>
@@ -67,9 +97,51 @@
                                 <input type="hidden" name="selectedTags" id="selectedValues">
                                 <div class="form-text">Max of five tags</div>
                             </div>
-                            <input type="submit" value="Checkout" class="btn btn-primary">
+                            @if (Auth::user())
+                                <input type="submit" value="Checkout" class="btn btn-primary">
+                            @endif
+
+                            {{-- Register Form --}}
+                            @unless(Auth::user())
+                                <div class="row mx-1 p-2 rounded" style="background:#c8e7ff">
+                                    <h6 class="text-center mt-2">Create an Account</h6>
+                                    <p class="text-muted ms-4">To login and edit the listing later.</p>
+                                    <div class="col-12">
+                                        <h5>Your Name</h5>
+                                        <input type="text" name="name" class="form-control w-100"
+                                            value="{{ old('name') }}">
+                                        @error('name')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <h5>Your Email</h5>
+                                        <input type="email" name="email" class="form-control w-100"
+                                            value="{{ old('email') }}">
+                                    </div>
+                                    @error('email')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                    <div class="col-12 mt-2">
+                                        <h5>Password</h5>
+                                        <input type="password" name="password" class="form-control w-100">
+                                    </div>
+                                    @error('password')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                    <div class="col-12 mt-2">
+                                        <h5>Confirm Password</h5>
+                                        <input type="password" name="password_confirmation" class="form-control w-100">
+                                    </div>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <input type="submit" value="Checkout" class="btn btn-info text-white">
+                                </div>
+                            @endunless
                         </form>
+
                     </div>
+                    {{-- END OF LEFT SIDE --}}
                     <div class="col-md-4 text-center fs-4 text-secondary">
                         <div class="companies mt-4">
                             <p>The official Laravel job board since 2014. Trusted by thousands of companies.</p>
@@ -87,7 +159,8 @@
                         <div class="laravelNews mt-4">
                             <p>
                                 Exclusively syndicated across the <a class="text-decoration-none"
-                                    href="https://laravel-news.com/" target="_blank">Laravel News</a> website/newsletter to
+                                    href="https://laravel-news.com/" target="_blank">Laravel News</a> website/newsletter
+                                to
                                 millions of readers
                             </p>
                         </div>

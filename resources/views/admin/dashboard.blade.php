@@ -1,3 +1,4 @@
-@extends('../layouts/master');
-@section('title', 'The official larajob board')
-@include('../partials/_navAdmin')
+@extends('admin.layouts.master')
+@section('content')
+    <h3>Admin Dashboard</h3>
+@endsection

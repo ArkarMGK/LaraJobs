@@ -7,19 +7,18 @@ use Illuminate\Http\Request;
 
 class AjaxController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
+        $jobs = JobList::select('job_lists.*', 'companies.name as company_name')
+            ->join('companies', 'job_lists.company_id', 'companies.id')
+            ->latest();
         if ($request->tagName == 'all') {
-            $jobs = JobList::select('job_lists.*','companies.name as company_name')
-            ->join('companies','job_lists.company_id','companies.id')
-            ->latest()
-            ->get();
-            return $jobs;
+            $jobs = $jobs->get();
+        } else {
+            $jobs = $jobs
+                ->where('job_lists.tags', 'like', '%' . $request->tagName . '%')
+                ->get();
         }
-        $jobs = JobList::select('job_lists.*','companies.name as company_name')
-        ->join('companies','job_lists.company_id','companies.id')
-        ->where('job_lists.tags', 'like', '%'.$request->tagName.'%')
-        ->latest()
-        ->get();
         return $jobs;
     }
 }

@@ -10,10 +10,10 @@
                         @unless(Auth::user())
                             <form action="{{ route('login') }}" method="POST">
                                 @csrf
+                                <x-jet-validation-errors class="mb-2 text-danger" />
                                 <div class="mx-1 row p-2 rounded" style="background:#eee">
                                     <div class="col-sm-5 col-12 my-1">
-                                        <input type="email" name="email" value="{{ old('email') }}" class="p-2 w-100"
-                                            placeholder="email">
+                                        <input type="email" name="email" class="p-2 w-100" placeholder="email">
                                     </div>
                                     <div class="col-sm-5 col-12 my-1">
                                         <input type="password" name="password" class="p-2 w-100" placeholder="password">
@@ -33,13 +33,16 @@
                                 <a class="text-muted" href="#register">No account? We'll set one up below.</a>
                             </div>
                         @endunless
-                        <form method="POST" action="{{ route('storeJob') }}">
+                        <form method="POST" action="{{ route('storeJob') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <label for="jobTitle" class="form-label">Job Title</label>
                                 <input type="text" class="form-control" id="jobTitle" name="jobTitle"
                                     value="{{ old('jobTitle') }}">
                                 <div class="form-text">Example: "Senior Laravel Developer", "Software Engineer"</div>
+                                @error('jobTitle')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="jobLocation" class="form-label">Job Location</label>
@@ -47,12 +50,18 @@
                                     value="{{ old('jobLocation') }}">
                                 <div class="form-text">Example: "Remote", "Remote / USA", "New York City", "Remote GMT-5",
                                     etc.</div>
+                                @error('jobLocation')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="jobUrl" class="form-label">URL to Description/Application</label>
                                 <input type="text" class="form-control" id="jobUrl" name="jobUrl"
                                     value="{{ old('jobUrl') }}">
                                 <div class="form-text">https://yourcompany.com/careers</div>
+                                @error('jobUrl')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="employmentType" class="form-label">Employment Type</label>
@@ -67,6 +76,9 @@
                                 <label for="companyName" class="form-label">Company Name</label>
                                 <input type="text" class="form-control" id="companyName" name="companyName"
                                     value="{{ old('companyName') }}">
+                                @error('companyName')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Company Logo</label>
@@ -75,9 +87,12 @@
                                         <img src="{{ asset('images/default/logo.png') }}" alt=""
                                             style="height: 100%;width:100%;object-fit:contain">
                                     </div>
-                                    <label for="logo" class="border rounded px-3 py-2" style="width:8rem">Select
+                                    <label for="image" class="border rounded px-3 py-2" style="width:8rem">Select
                                         File</label>
-                                    <input id="logo" type="file" name="photo" style="display: none;">
+                                    <input type="file" name="image" id="image" style="display: none">
+                                    @error('image')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -96,6 +111,9 @@
                                 </select>
                                 <input type="hidden" name="selectedTags" id="selectedValues">
                                 <div class="form-text">Max of five tags</div>
+                                @error('jobTag')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             @if (Auth::user())
                                 <input type="submit" value="Checkout" class="btn btn-primary">

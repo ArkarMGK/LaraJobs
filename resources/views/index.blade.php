@@ -20,7 +20,7 @@
                         @php
                             $allTags = explode(',', $allTags);
                         @endphp
-                        <form action="{{route('home')}}" method="GET">
+                        <form action="{{ route('home') }}" method="GET">
                             <select class="form-select" aria-label="form-select-lg example" name="tags"
                                 id="searchByTags">
                                 <option selected>Filter</option>
@@ -38,8 +38,8 @@
                         <div class="row my-4 border border-2  border-opacity-50 rounded p-4">
                             <div class="col-2">
                                 <div class="img-container" style="width: 100%;height:3rem">
-                                    <img src="{{ asset('images/default/logo.png') }}" alt=""
-                                        style="height: 100%;width:100%;object-fit:contain">
+                                    <img src=" {{ $job->logo ? asset('storage/images/logo/' . $job->logo) : asset('images/default/logo.png') }}"
+                                        alt="" style="height: 100%;width:100%;object-fit:contain">
                                 </div>
                             </div>
                             <div class="col-4">
@@ -79,7 +79,8 @@
                 <!--All Tags-->
                 <div>
                     @foreach ($allTags as $tag)
-                        <button value="{{ $tag }}" style="background:#ddd" class="px-3 py-2 mt-4 border-0 me-4">{{ $tag }}</button>
+                        <button value="{{ $tag }}" style="background:#ddd"
+                            class="px-3 py-2 mt-4 border-0 me-4">{{ $tag }}</button>
                     @endforeach
                 </div>
             </div>
@@ -125,7 +126,7 @@
                                 <div class="row my-4 border border-2  border-opacity-50 rounded p-4">
                                     <div class="col-2">
                                         <div class="img-container" style="width: 100%;height:3rem">
-                                            <img src="{{ asset('images/default/logo.png') }}" alt=""
+                                            <img src="{{ $job->logo ? asset('storage/images/logo/' . $job->logo) : asset('images/default/logo.png') }}" alt=""
                                                 style="height: 100%;width:100%;object-fit:contain">
                                         </div>
                                     </div>

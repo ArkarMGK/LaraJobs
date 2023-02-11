@@ -34,8 +34,7 @@ class DatabaseSeeder extends Seeder
             // 'password' => 'user123',
         ]);
 
-        JobList::factory(10)->create();
-        Company::factory(10)->create();
-
+        JobList::factory(5)->create();
+        Company::factory(5)->create();
     }
 }

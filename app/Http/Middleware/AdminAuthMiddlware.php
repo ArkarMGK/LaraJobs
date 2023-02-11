@@ -17,9 +17,19 @@ class AdminAuthMiddlware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::user()->email != 'admin@gmail.com'){
-            abort(404);
+        if (Auth::user()) {
+            if (url()->current() == route('admin#login')) {
+                return back();
+            }
+
+            if (Auth::user()->email != 'admin@gmail.com') {
+                // abort(404);
+                return back();
+            }
+
+            return $next($request);
         }
+
         return $next($request);
     }
 }

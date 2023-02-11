@@ -17,47 +17,51 @@
             <div class="col-md-6">
                 <h1 class="fs-1 mt-2 underline">Active Jobs</h1>
                 @foreach ($jobs as $job)
-                    <div class="row my-4 border border-2  border-opacity-50 rounded p-4">
-                        <div class="col-2">
-                            <div class="img-container" style="width: 100%;height:3rem">
-                                <img src="{{ asset('images/default/logo.png') }}" alt=""
-                                    style="height: 100%;width:100%;object-fit:contain">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <p>{{ $job->company_name }}</p>
-                            <h4>
-                                {{ $job->title }}
-                            </h4>
-                            <h6>
-                                {{ $job->employment_type }} - {{ $job->salary }}
-                            </h6>
-                        </div>
-                        <div class="col-6">
-                            <div class="row d-flex">
-                                <div class="col-6">
-                                    <span><i class="fa-solid fa-globe"></i> {{ $job->job_location }}</span>
-                                </div>
-                                <div class="col-6">
-                                    <span><i class="fa-solid fa-calendar-days"></i>
-                                        {{ $job->created_at->diffForHumans() }}</span>
+                    <a href="{{ route('editJob', $job->id) }}">
+                        <div class="row my-4 border border-2  border-opacity-50 rounded p-4">
+                            <div class="col-2">
+                                <div class="img-container" style="width: 100%;height:3rem">
+                                    <img src="{{ $job->logo ? asset('storage/images/logo/' . $job->logo) : asset('images/default/logo.png') }}"
+                                        alt="" style="height: 100%;width:100%;object-fit:contain">
                                 </div>
                             </div>
-                            <div>
-                                @php
-                                    $tags = explode(',', $job->tags);
-                                @endphp
-                                @foreach ($tags as $tag)
-                                    <button class="btn btn-outline-dark my-1">
-                                        {{ $tag }}
-                                    </button>
-                                @endforeach
+                            <div class="col-4">
+                                <p>{{ $job->company_name }}</p>
+                                <h4>
+                                    {{ $job->title }}
+                                </h4>
+                                <h6>
+                                    {{ $job->employment_type }} - {{ $job->salary }}
+                                </h6>
+                            </div>
+                            <div class="col-6">
+                                <div class="row d-flex">
+                                    <div class="col-6">
+                                        <span><i class="fa-solid fa-globe"></i> {{ $job->job_location }}</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span><i class="fa-solid fa-calendar-days"></i>
+                                            {{ $job->created_at->diffForHumans() }}</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    @php
+                                        $tags = explode(',', $job->tags);
+                                    @endphp
+                                    @foreach ($tags as $tag)
+                                        <button class="btn btn-outline-dark my-1">
+                                            {{ $tag }}
+                                        </button>
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 @endforeach
             </div>
         </div>
     </div>
-    @include('partials/_footer')
 </x-app-layout>
+<div style="margin-top:-4rem">
+    @include('partials/_footer')
+</div>

@@ -6,6 +6,7 @@ use App\Models\Tags;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\JobList;
+use App\Models\Employment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,9 +20,15 @@ class JobListController extends Controller
         $jobs = JobList::select(
             'job_lists.*',
             'companies.name as company_name',
-            'companies.logo as logo'
+            'companies.logo as logo',
+            'employments.employment_type as employment_type'
         )
-            ->join('companies', 'job_lists.company_id', 'companies.id')
+            ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
+            ->leftJoin(
+                'employments',
+                'job_lists.employment_type_id',
+                'employments.id'
+            )
             ->latest()
             ->get();
         $allTags = Tags::allTags();
@@ -33,12 +40,58 @@ class JobListController extends Controller
     public function create()
     {
         $allTags = Tags::allTags();
-        return view('create', compact('allTags'));
+        $employments = Employment::get();
+        return view('create', compact('allTags', 'employments'));
     }
 
+    public function dashboard()
+    {
+        $jobs = JobList::select(
+            'job_lists.*',
+            'companies.name as company_name',
+            'companies.logo as logo',
+            'employments.employment_type as employment_type'
+        )
+            ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
+            ->leftJoin(
+                'employments',
+                'job_lists.employment_type_id',
+                'employments.id'
+            )
+            ->where('job_lists.user_id', Auth::user()->id)
+            ->latest()
+            ->get();
+        $employments = Employment::get();
+        return view('dashboard', compact('jobs','employments'));
+    }
+
+    public function edit($id)
+    {
+        $job = JobList::select(
+            'job_lists.*',
+            'companies.name as company_name',
+            'companies.logo as logo',
+            'employments.employment_type as employment_type'
+        )
+            ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
+            ->leftJoin(
+                'employments',
+                'job_lists.employment_type_id',
+                'employments.id'
+            )
+            ->where('job_lists.id', $id)
+            ->first();
+        if($job == null){
+            return abort(404);
+        }
+        $allTags = Tags::allTags();
+        $employments = Employment::get();
+        return view('edit', compact('job', 'allTags','employments'));
+    }
+
+    // Jobs CRUD
     public function store(Request $request)
     {
-        $this->formValidationCheck($request);
 
         if ($request->email) {
             $formFields = $request->validate([
@@ -52,6 +105,7 @@ class JobListController extends Controller
             auth()->login($user);
         }
 
+        $this->formValidationCheck($request);
         $data = $this->requestFormData($request);
         // Company
         $data['company_id'] = $this->getCompanyId($request->companyName);
@@ -63,23 +117,9 @@ class JobListController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function edit($id)
-    {
-        $job = JobList::select(
-            'job_lists.*',
-            'companies.name as company_name',
-            'companies.logo as logo'
-        )
-            ->join('companies', 'job_lists.company_id', 'companies.id')
-            ->where('job_lists.id', $id)
-            ->first();
-        $allTags = Tags::allTags();
-        // dd($job->toArray());
-        return view('edit', compact('job', 'allTags'));
-    }
-
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $this->formValidationCheck($request);
         $data = $this->requestFormData($request);
         // Company
@@ -130,11 +170,17 @@ class JobListController extends Controller
             'jobTitle' => 'required',
             'jobLocation' => 'required',
             'jobUrl' => 'required|url',
-            'jobTag' => 'required',
+            'selectedTags' => 'required',
             'logo' => 'mimes:png,jpeg,jpg|file',
             'companyName' => 'required',
             'selectedTags' => 'required',
         ];
+
+        if(!Auth::user()){
+            $validationRules = [
+                'user' => 'required',
+            ];
+        }
         $validationMessage = [
             'companyName.required' => 'The organization field is required.',
         ];
@@ -153,20 +199,7 @@ class JobListController extends Controller
             'user_id' => Auth::user()->id,
             'job_url' => $request->jobUrl,
             'job_location' => $request->jobLocation,
-            'employment_type' => $request->employmentType,
+            'employment_type_id' => $request->employmentType,
         ];
-    }
-    public function dashboard()
-    {
-        $jobs = JobList::select(
-            'job_lists.*',
-            'companies.name as company_name',
-            'companies.logo as logo'
-        )
-            ->join('companies', 'job_lists.company_id', 'companies.id')
-            ->where('job_lists.user_id', Auth::user()->id)
-            ->latest()
-            ->get();
-        return view('dashboard', compact('jobs'));
     }
 }

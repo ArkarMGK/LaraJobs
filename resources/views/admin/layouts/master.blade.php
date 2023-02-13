@@ -40,10 +40,10 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{ route('admin#employmentType') }}" class="nav-link">
                                 <i class="fas fa-list"></i>
                                 <p>
-                                    Admin List
+                                    Types of Employment
                                 </p>
                             </a>
                         </li>
@@ -64,6 +64,16 @@
         <div class="content-wrapper">
             <section class="content">
                 <div class="container-fluid">
+                    @if (session('message'))
+                        <div class="d-flex justify-content-center">
+                            <div class="alert alert-danger alert-dismissible fade show col-lg-8" role="alert">
+                                {{ session('message') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    @endif
                     <div class="row pt-4">
                         @yield('content')
                     </div>

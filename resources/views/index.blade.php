@@ -12,7 +12,7 @@
     </div>
     <div class="container-fluid">
         <div class="d-flex justify-content-center px-2">
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <!--FILTER BY TAGS-->
                 <div class="row d-flex">
                     <div class="col-10"></div>

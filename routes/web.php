@@ -5,6 +5,7 @@ use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobListController;
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\EmploymentTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,9 +66,51 @@ Route::middleware([
                 'dashboard',
             ])->name('admin#dashboard');
 
+            // admin account info
             Route::get('profile', [AdminController::class, 'profile'])->name(
                 'admin#profile'
             );
+            // employmentType CRUD
+            Route::prefix('employment')->group(function () {
+                Route::get('index', [
+                    EmploymentTypeController::class,
+                    'index',
+                ])->name('admin#employmentType');
+
+                Route::get('create', [
+                    EmploymentTypeController::class,
+                    'create',
+                ])->name('admin#createEmployment');
+
+                Route::post('create', [
+                    EmploymentTypeController::class,
+                    'store',
+                ])->name('admin#storeEmployment');
+
+                Route::delete('destroy/{employment}', [
+                    EmploymentTypeController::class,
+                    'destroy',
+                ])->name('admin#deleteEmploymentType');
+
+                Route::get('edit/{employment}', [
+                    EmploymentTypeController::class,
+                    'edit',
+                ])->name('admin#editEmploymentType');
+
+                Route::post('update/{employment}', [
+                    EmploymentTypeController::class,
+                    'update',
+                ])->name('admin#updateEmploymentType');
+            });
+
+            // Common Resource Routes:
+            // index - Show all listings
+            // show - Show single listing
+            // create - Show form to create new listing
+            // store - Store new listing
+            // edit - Show form to edit listing
+            // update - Update listing
+            // destroy - Delete listing
         }
     );
 });

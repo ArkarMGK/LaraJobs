@@ -14,7 +14,7 @@
     </div> --}}
     <div class="container-fluid">
         <div class="d-flex justify-content-center px-2">
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <h1 class="fs-1 mt-2 underline">Active Jobs</h1>
                 @foreach ($jobs as $job)
                     <a href="{{ route('editJob', $job->id) }}">

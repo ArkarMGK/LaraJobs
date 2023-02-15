@@ -30,7 +30,9 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-                        <li class="nav-item">
+                        <li class="nav-item mb-2 @if (url()->current() == route('admin#profile'))
+                            bg-primary rounded
+                        @endif">
                             <a href="{{ route('admin#profile') }}" class="nav-link">
                                 <i class="fas fa-user-circle"></i>
                                 <p>
@@ -39,7 +41,31 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
+                        <li class="nav-item mb-2 @if (url()->current() == route('admin#jobList'))
+                            bg-primary rounded
+                        @endif">
+                            <a href="{{ route('admin#jobList') }}" class="nav-link">
+                                <i class="fas fa-list"></i>
+                                <p>
+                                    Active Jobs
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item mb-2 @if (url()->current() == route('admin#oldJobList'))
+                            bg-primary rounded
+                        @endif">
+                            <a href="{{ route('admin#oldJobList') }}" class="nav-link">
+                                <i class="fas fa-list"></i>
+                                <p>
+                                    Older Jobs
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item mb-2 @if (url()->current() == route('admin#employmentType'))
+                            bg-primary rounded
+                        @endif">
                             <a href="{{ route('admin#employmentType') }}" class="nav-link">
                                 <i class="fas fa-list"></i>
                                 <p>
@@ -47,7 +73,8 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+
+                        <li class="nav-item mb-2">
                             <form action="{{ route('logout') }}" method="post">
                                 @csrf
                                 <button type="submit" class="btn btn-danger w-100">
@@ -74,7 +101,7 @@
                             </div>
                         </div>
                     @endif
-                    <div class="row pt-4">
+                    <div class="row pt-2">
                         @yield('content')
                     </div>
                 </div>
@@ -89,5 +116,5 @@
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
     <script src="{{ asset('dist/js/demo.js') }}"></script>
 </body>
-
+@yield('script')
 </html>

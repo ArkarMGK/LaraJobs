@@ -29,12 +29,29 @@ class JobListController extends Controller
                 'job_lists.employment_type_id',
                 'employments.id'
             )
+            ->where('available', '1')
+            ->latest()
+            ->get();
+
+        $oldJobs = JobList::select(
+            'job_lists.*',
+            'companies.name as company_name',
+            'companies.logo as logo',
+            'employments.employment_type as employment_type'
+        )
+            ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
+            ->leftJoin(
+                'employments',
+                'job_lists.employment_type_id',
+                'employments.id'
+            )
+            ->where('available', '0')
             ->latest()
             ->get();
         $allTags = Tags::allTags();
         // dd($allTags['tags']);
         // dd($jobs->toArray());
-        return view('index', compact('jobs', 'allTags'));
+        return view('index', compact('jobs', 'oldJobs','allTags'));
     }
 
     public function create()
@@ -62,7 +79,7 @@ class JobListController extends Controller
             ->latest()
             ->get();
         $employments = Employment::get();
-        return view('dashboard', compact('jobs','employments'));
+        return view('dashboard', compact('jobs', 'employments'));
     }
 
     public function edit($id)
@@ -81,18 +98,17 @@ class JobListController extends Controller
             )
             ->where('job_lists.id', $id)
             ->first();
-        if($job == null){
+        if ($job == null) {
             return abort(404);
         }
         $allTags = Tags::allTags();
         $employments = Employment::get();
-        return view('edit', compact('job', 'allTags','employments'));
+        return view('edit', compact('job', 'allTags', 'employments'));
     }
 
     // Jobs CRUD
     public function store(Request $request)
     {
-
         if ($request->email) {
             $formFields = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
@@ -176,7 +192,7 @@ class JobListController extends Controller
             'selectedTags' => 'required',
         ];
 
-        if(!Auth::user()){
+        if (!Auth::user()) {
             $validationRules = [
                 'user' => 'required',
             ];
@@ -198,6 +214,7 @@ class JobListController extends Controller
             'tags' => $request->selectedTags,
             'user_id' => Auth::user()->id,
             'job_url' => $request->jobUrl,
+            'salary' => $request->salary,
             'job_location' => $request->jobLocation,
             'employment_type_id' => $request->employmentType,
         ];

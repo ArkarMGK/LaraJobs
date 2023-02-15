@@ -71,9 +71,15 @@
                                 <label for="employmentType" class="form-label">Employment Type</label>
                                 <select name="employmentType" id="employmentType" class="form-select">
                                     @foreach ($employments as $employment)
-                                        <option value="{{$employment->id}}">{{$employment->employment_type}}</option>
+                                        <option value="{{ $employment->id }}">{{ $employment->employment_type }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="salary" class="form-label">Salary (Optional)</label>
+                                <input type="number" class="form-control" id="salary" name="salary"
+                                    value="{{ old('salary') }}">
+
                             </div>
                             <div class="mb-3">
                                 <label for="companyName" class="form-label">Company Name</label>
@@ -124,7 +130,7 @@
 
                             {{-- Register Form --}}
                             @unless(Auth::user())
-                                <div class="row mx-1 p-2 rounded" style="background:#c8e7ff">
+                                <div class="row mx-1 p-2 rounded" style="background:#c8e7ff" id="register">
                                     <h6 class="text-center mt-2">Create an Account</h6>
                                     <p class="text-muted ms-4">To login and edit the listing later.</p>
                                     <div class="col-12">
@@ -176,15 +182,16 @@
     <script>
         $(document).ready(function() {
             $('#listOfSelectedTags').hide();
-            // keep selected tags in an array
+
+            $allTags = $('#allTags').val();
+            $unSelectedTags = $allTags.split(',')
             $selectedTags = [];
-            $tags = $('#allTags').val();
 
             $('#jobTag').change(function() {
                 if ($selectedTags.length < 5) {
                     $tag = $('#jobTag').val();
                     $selectedTags.push($tag);
-                    $('#listOfSelectedTags').show();
+
                     $tagList = [];
                     for ($j = 0; $j < $selectedTags.length; $j++) {
                         $tagList += `
@@ -192,38 +199,35 @@
                                     ${ $selectedTags[$j] }
                                 </button>
                                 `;
+
+                        $unSelectedTags = $.grep($unSelectedTags, function(value) {
+                            return value != $selectedTags[$j];
+                        });
                     }
                     // Appends to HTML to show user selected tags
                     $('#listOfSelectedTags').html($tagList);
+                    $('#listOfSelectedTags').show();
 
+                    // Set SELECTED VALUES to hidden field as a string
                     $selectedTagsStr = $selectedTags + '';
-                    console.log($selectedTagsStr);
-
-                    $unSelectedTagsStr = $tags.replace($selectedTagsStr, '');
-                    console.log($tags);
-                    console.log($unSelectedTagsStr);
-
-
                     $('#selectedValues').val($selectedTagsStr);
 
-                    // str.replace(rem_substring, newSubstring);
 
-                    // Filter selected tags
-                    // $tags = $('#allTags').val().split(',');
-                    // $unSelectedTags = $tags.filter(v => v != $selectedTags[$i]);
-                    // $i= $i+1;
-                    // console.log('increase count '+$i);
-                    // console.log('unselected tags '+$unSelectedTags);
+                    console.log('all_tags => ' + $allTags);
+                    console.log('selected tags =>' + $selectedTagsStr);
+                    $unSelectedTagsStr = $unSelectedTags + '';
+                    console.log('remaining tags=>' + $unSelectedTagsStr);
 
-                    // Convert unselected tags to an array
-                    // $unSelectedTagsArr = $unSelectedTags.split(',');
-                    // console.log($unSelectedTagsArr);
-
+                    // $('#jobTag').html = '';
+                    // $unSelectedTagsList = '';
+                    // console.log($('#jobTag').val());
+                    // for ($j = 1; $j <= $unSelectedTags.length; $j++) {
+                    //     $unSelectedTagsList += `<option value="${$j}">${$unSelectedTags[$j]}</option>`;
+                    // }
+                    // $('#jobTag').append($unSelectedTagsList);
 
                 }
             })
-
-
         })
     </script>
 @endsection

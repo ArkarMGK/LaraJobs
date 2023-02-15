@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobListController;
+use App\Http\Controllers\admin\JobsController;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\EmploymentTypeController;
 
@@ -103,6 +104,33 @@ Route::middleware([
                 ])->name('admin#updateEmploymentType');
             });
 
+            Route::prefix('job')->group(function () {
+                Route::get('index', [JobsController::class, 'index'])->name(
+                    'admin#jobList'
+                );
+                Route::get('oldJobs', [JobsController::class, 'oldJobs'])->name(
+                    'admin#oldJobList'
+                );
+                Route::delete('destroy/{job}', [
+                    JobListController::class,
+                    'destroy',
+                ])->name('admin#deleteJob');
+
+                Route::post('hired/{job}', [
+                    JobsController::class,
+                    'hiredJob',
+                ])->name('admin#hiredJob');
+
+                Route::post('vacant/{job}', [
+                    JobsController::class,
+                    'vacantJob',
+                ])->name('admin#vacantJob');
+
+                Route::delete('destroy/{job}', [
+                    JobsController::class,
+                    'destroy',
+                ])->name('admin#deleteJob');
+            });
             // Common Resource Routes:
             // index - Show all listings
             // show - Show single listing

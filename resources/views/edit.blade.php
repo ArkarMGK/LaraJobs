@@ -48,6 +48,11 @@
                                 </select>
                             </div>
                             <div class="mb-3">
+                                <label for="salary" class="form-label">Salary (Optional)</label>
+                                <input type="number" class="form-control" id="salary" name="salary"
+                                    value="{{ old('salary',$job->salary) }}">
+                            </div>
+                            <div class="mb-3">
                                 <label for="companyName" class="form-label">Company Name</label>
                                 <input type="text" class="form-control" id="companyName" name="companyName"
                                     value="{{ old('companyName', $job->company_name) }}">
@@ -120,8 +125,9 @@
         $(document).ready(function() {
             // $('#listOfSelectedTags').hide();
             // keep selected tags in an array
+            $allTags = $('#allTags').val();
+            $unSelectedTags = $allTags.split(',')
             $selectedTags = [];
-            $tags = $('#allTags').val();
 
             $('#jobTag').change(function() {
                 if ($selectedTags.length < 5) {
@@ -135,19 +141,23 @@
                                     ${ $selectedTags[$j] }
                                 </button>
                                 `;
+                                $unSelectedTags = $.grep($unSelectedTags, function(value) {
+                            return value != $selectedTags[$j];
+                        });
                     }
                     // Appends to HTML to show user selected tags
                     $('#listOfSelectedTags').html($tagList);
+                    $('#listOfSelectedTags').show();
 
+                    // Set SELECTED VALUES to hidden field as a string
                     $selectedTagsStr = $selectedTags + '';
-                    console.log($selectedTagsStr);
-
-                    $unSelectedTagsStr = $tags.replace($selectedTagsStr, '');
-                    console.log($tags);
-                    console.log($unSelectedTagsStr);
-
-
                     $('#selectedValues').val($selectedTagsStr);
+
+
+                    console.log('all_tags => ' + $allTags);
+                    console.log('selected tags =>' + $selectedTagsStr);
+                    $unSelectedTagsStr = $unSelectedTags + '';
+                    console.log('remaining tags=>' + $unSelectedTagsStr);
 
                     // str.replace(rem_substring, newSubstring);
 

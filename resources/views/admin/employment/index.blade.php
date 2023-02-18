@@ -12,44 +12,40 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="tab-content">
-                        <div class="active tab-pane" id="activity">
-                            <div class="table-responsive p-0">
-                                <table class="table table-hover text-nowrap text-center">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($employments as $employment)
-                                            <tr>
-                                                <td>{{ $employment->id }}</td>
-                                                <td>{{ $employment->employment_type }}</td>
-                                                <td>
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                        <a href="{{ route('admin#editEmploymentType', $employment) }}">
-                                                            <button class="btn btn-sm bg-dark text-white"><i
-                                                                    class="fas fa-edit"></i> <span>Update</span></button>
-                                                        </a>
-                                                        <form method="POST"
-                                                            action="{{ route('admin#deleteEmploymentType', $employment->id) }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-sm bg-danger text-white"><i
-                                                                    class="fas fa-trash-alt"></i>
-                                                                <span>Delete</span></button>
-                                                        </form>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="table-responsive p-0">
+                        <table class="table table-hover text-nowrap text-center">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($employments as $employment)
+                                    <tr>
+                                        <td>{{ $employment->id }}</td>
+                                        <td>{{ $employment->employment_type }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <a href="{{ route('admin#editEmploymentType', $employment) }}">
+                                                    <button class="btn btn-sm bg-dark text-white"><i
+                                                            class="fas fa-edit"></i> <span>Update</span></button>
+                                                </a>
+                                                <form method="POST"
+                                                    action="{{ route('admin#deleteEmploymentType', $employment->id) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-sm bg-danger text-white"><i
+                                                            class="fas fa-trash-alt"></i>
+                                                        <span>Delete</span></button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

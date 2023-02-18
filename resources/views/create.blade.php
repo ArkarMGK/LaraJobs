@@ -99,10 +99,11 @@
                                     <label for="image" class="border rounded px-3 py-2" style="width:8rem">Select
                                         File</label>
                                     <input type="file" name="image" id="image" style="display: none">
-                                    @error('image')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
                                 </div>
+                                @error('image')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+
                             </div>
                             <div class="mb-3">
                                 <input type="hidden" id="allTags" value="{{ $allTags }}">

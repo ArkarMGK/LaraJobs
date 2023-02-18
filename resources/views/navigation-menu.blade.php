@@ -20,7 +20,7 @@
                 {{-- EDIT ->Left Nav --}}
                 <a class="navbar-brand text-info fs-1 me-4" href="{{ route('home') }}">larajobs</a>
                 <a href="{{route('dashboard')}}" class="text-decoration-none text-dark me-2">My Account</a>
-                <a href="" class="text-decoration-none text-dark">Order history</a>
+                <a href="{{route('history')}}" class="text-decoration-none text-dark">Order history</a>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -106,7 +106,7 @@
                             </x-jet-dropdown-link>
 
                             {{-- EDIT->Order History --}}
-                            <x-jet-dropdown-link href="{{ route('profile.show') }}">
+                            <x-jet-dropdown-link href="{{ route('history') }}">
                                 {{ __('Order History') }}
                             </x-jet-dropdown-link>
 

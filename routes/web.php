@@ -5,6 +5,7 @@ use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobListController;
 use App\Http\Controllers\admin\JobsController;
+use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\EmploymentTypeController;
 
@@ -46,8 +47,8 @@ Route::get('/admin', [AdminController::class, 'login'])
 
 Route::middleware([
     'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
+    // config('jetstream.auth_session'),
+    // 'verified',
 ])->group(function () {
     //  After authentication , users are redirected to specific dashboards based on role(user or admin)
     //  admin will have both access to user site and admin dashboard
@@ -56,6 +57,11 @@ Route::middleware([
     // User dashboard
     Route::get('account', [JobListController::class, 'dashboard'])->name(
         'dashboard'
+    );
+
+    // User dashboard
+    Route::get('history', [JobListController::class, 'history'])->name(
+        'history'
     );
 
     // Admin dashboard routes
@@ -71,6 +77,18 @@ Route::middleware([
             Route::get('profile', [AdminController::class, 'profile'])->name(
                 'admin#profile'
             );
+
+            // update admin profile
+            Route::post('update', [
+                AdminController::class,
+                'updateProfile',
+            ])->name('admin#updateProfile');
+
+            Route::post('password', [
+                AdminController::class,
+                'updatePassword',
+            ])->name('admin#updatePassword');
+
             // employmentType CRUD
             Route::prefix('employment')->group(function () {
                 Route::get('index', [
@@ -104,13 +122,16 @@ Route::middleware([
                 ])->name('admin#updateEmploymentType');
             });
 
+            // Joblist CRUD
             Route::prefix('job')->group(function () {
                 Route::get('index', [JobsController::class, 'index'])->name(
                     'admin#jobList'
                 );
+
                 Route::get('oldJobs', [JobsController::class, 'oldJobs'])->name(
                     'admin#oldJobList'
                 );
+
                 Route::delete('destroy/{job}', [
                     JobListController::class,
                     'destroy',
@@ -131,14 +152,23 @@ Route::middleware([
                     'destroy',
                 ])->name('admin#deleteJob');
             });
-            // Common Resource Routes:
-            // index - Show all listings
-            // show - Show single listing
-            // create - Show form to create new listing
-            // store - Store new listing
-            // edit - Show form to edit listing
-            // update - Update listing
-            // destroy - Delete listing
+
+            // User CRUD
+            Route::prefix('user')->group(function () {
+                Route::get('index', [UserController::class, 'index'])->name(
+                    'admin#userList'
+                );
+
+                Route::get('show/{user}', [
+                    UserController::class,
+                    'show',
+                ])->name('admin#userInfo');
+
+                Route::delete('delete/{user}', [
+                    UserController::class,
+                    'destroy',
+                ])->name('admin#deleteUser');
+            });
         }
     );
 });

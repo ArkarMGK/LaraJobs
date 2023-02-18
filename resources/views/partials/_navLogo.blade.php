@@ -9,20 +9,20 @@
                 <div class="row">
                     <div class="col-lg-8 col-6">
                         <a href="{{route('dashboard')}}" class="text-decoration-none text-dark">My Account</a>
-                        <a href="" class="text-decoration-none text-dark">Order history</a>
+                        <a href="{{route('history')}}" class="text-decoration-none text-dark">Order history</a>
                     </div>
                     <div class="col-lg-4 col-6">
                         <form action="{{route('logout')}}" method="POST">
                         @csrf
-                        <div class="text-secondary">{{Auth::user()->name}}</div>
-                        <input type="submit" value="Logout">
+                        <div class="text-secondary p-1">{{Auth::user()->name}}</div>
+                        <input type="submit" value="Logout" class="btn btn-secondary btn-sm">
                         </form>
                     </div>
                 </div>
             </div>
         @else
             <div class="col-8 mt-4">
-                <a href="{{route('login')}}">Login</a>
+                <a href="{{route('login')}}" class="fs-5">Login</a>
             </div>
         @endif
     </div>

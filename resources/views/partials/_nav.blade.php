@@ -11,7 +11,7 @@
                 <div class="col-lg-4 d-lg-flex justify-content-around fs-5 pt-lg-3">
                     <a class="nav-link" href="#">Jobs</a>
                     <a class="nav-link" href="#">Consultants</a>
-                    <a class="nav-link" href="#">Twitter</a>
+                    <a class="nav-link" href="https://twitter.com/laraveljobs" target="_blank">Twitter</a>
                     @if (Auth::user())
                         <a class="nav-link" href="{{ route('dashboard')}}">My Account</a>
                     @else

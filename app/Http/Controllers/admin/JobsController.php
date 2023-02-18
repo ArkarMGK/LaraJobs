@@ -12,23 +12,7 @@ class JobsController extends Controller
     // SHOW ACTIVE JOBS
     public function index()
     {
-        $jobs = JobList::select(
-            'job_lists.*',
-            'companies.name as company_name',
-            'companies.logo as logo',
-            'employments.employment_type as employment_type'
-        )
-            ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
-            ->leftJoin(
-                'employments',
-                'job_lists.employment_type_id',
-                'employments.id'
-            )
-            ->where('available', 1)
-            ->latest()
-            // ->get();
-            ->paginate(3);
-
+        $jobs = $this->getJobs('active');
         // dd($jobs->toArray());
         return view('admin.jobs.index', compact('jobs'));
     }
@@ -36,23 +20,44 @@ class JobsController extends Controller
     // SHOW OLD JOBS
     public function oldJobs()
     {
+        $jobs = $this->getJobs('old');
+        return view('admin.jobs.olds', compact('jobs'));
+    }
+
+    private function getJobs($status){
+
+        $status == 'active' ? $status = 1 : $status =  0;
         $jobs = JobList::select(
             'job_lists.*',
             'companies.name as company_name',
             'companies.logo as logo',
             'employments.employment_type as employment_type'
-        )
+            )
             ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
             ->leftJoin(
                 'employments',
                 'job_lists.employment_type_id',
                 'employments.id'
             )
-            ->where('available', '0')
+            ->when(request('search'), function ($query) {
+                $key = request('search');
+                $query
+                    ->where('job_lists.title', 'like', '%' . $key . '%')
+                    ->orWhere('job_lists.tags', 'like', '%' . $key . '%')
+                    ->orWhere(
+                        'job_lists.job_location',
+                        'like',
+                        '%' . $key . '%'
+                    )
+                    ->orWhere('companies.name', 'like', '%' . $key . '%')
+                    ->orWhere('employment_type', 'like', '%' . $key . '%');
+            })
+            ->where('available', $status)
             ->latest()
             // ->get();
             ->paginate(3);
-        return view('admin.jobs.olds', compact('jobs'));
+
+        return $jobs;
     }
 
     // APPROVE A HIRED JOB (not vacant)
@@ -84,7 +89,7 @@ class JobsController extends Controller
     {
         $jobId = $job->id;
         $job->delete();
-        $message = 'Hired Job #' . $jobId .' is now Deleted !';
+        $message = 'Hired Job #' . $jobId . ' is now Deleted !';
         return redirect()
             ->route('admin#oldJobList')
             ->with('message', $message);

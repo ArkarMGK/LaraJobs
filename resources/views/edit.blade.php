@@ -41,16 +41,16 @@
                                 <label for="employmentType" class="form-label">Employment Type</label>
                                 <select name="employmentType" id="employmentType" class="form-select">
                                     @foreach ($employments as $employment)
-                                        <option value="{{$employment->id}}" @if ($employment->id == $job->employment_type_id)
-                                            selected
-                                        @endif>{{$employment->employment_type}}</option>
+                                        <option value="{{ $employment->id }}"
+                                            @if ($employment->id == $job->employment_type_id) selected @endif>
+                                            {{ $employment->employment_type }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="salary" class="form-label">Salary (Optional)</label>
                                 <input type="number" class="form-control" id="salary" name="salary"
-                                    value="{{ old('salary',$job->salary) }}">
+                                    value="{{ old('salary', $job->salary) }}">
                             </div>
                             <div class="mb-3">
                                 <label for="companyName" class="form-label">Company Name</label>
@@ -70,10 +70,10 @@
                                     <label for="image" class="border rounded px-3 py-2" style="width:8rem">Select
                                         File</label>
                                     <input type="file" name="image" id="image" style="display: none">
-                                    @error('image')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
                                 </div>
+                                @error('image')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <input type="hidden" id="allTags" value="{{ $allTags }}">
@@ -141,7 +141,7 @@
                                     ${ $selectedTags[$j] }
                                 </button>
                                 `;
-                                $unSelectedTags = $.grep($unSelectedTags, function(value) {
+                        $unSelectedTags = $.grep($unSelectedTags, function(value) {
                             return value != $selectedTags[$j];
                         });
                     }

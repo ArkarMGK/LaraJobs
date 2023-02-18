@@ -76,10 +76,31 @@ class JobListController extends Controller
                 'employments.id'
             )
             ->where('job_lists.user_id', Auth::user()->id)
+            ->where('job_lists.available', '1')
             ->latest()
             ->get();
-        $employments = Employment::get();
-        return view('dashboard', compact('jobs', 'employments'));
+        return view('dashboard', compact('jobs'));
+    }
+
+    public function history()
+    {
+        $jobs = JobList::select(
+            'job_lists.*',
+            'companies.name as company_name',
+            'companies.logo as logo',
+            'employments.employment_type as employment_type'
+        )
+            ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
+            ->leftJoin(
+                'employments',
+                'job_lists.employment_type_id',
+                'employments.id'
+            )
+            ->where('job_lists.user_id', Auth::user()->id)
+            ->where('job_lists.available', '0')
+            ->latest()
+            ->get();
+        return view('dashboard', compact('jobs'));
     }
 
     public function edit($id)
@@ -187,7 +208,7 @@ class JobListController extends Controller
             'jobLocation' => 'required',
             'jobUrl' => 'required|url',
             'selectedTags' => 'required',
-            'logo' => 'mimes:png,jpeg,jpg|file',
+            'image' => 'mimes:png,jpeg,jpg|file',
             'companyName' => 'required',
             'selectedTags' => 'required',
         ];

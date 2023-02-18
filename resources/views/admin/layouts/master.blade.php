@@ -23,16 +23,14 @@
             </ul>
         </nav>
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="#" class="brand-link">
+            <a href="{{route('admin#dashboard')}}" class="brand-link m-2 text-center @if (url()->current() == route('admin#dashboard')) bg-primary rounded @endif">
                 <span class="brand-text font-weight-light"> Welcome Admin </span>
             </a>
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-                        <li class="nav-item mb-2 @if (url()->current() == route('admin#profile'))
-                            bg-primary rounded
-                        @endif">
+                        <li class="nav-item mb-2 @if (url()->current() == route('admin#profile')) bg-primary rounded @endif">
                             <a href="{{ route('admin#profile') }}" class="nav-link">
                                 <i class="fas fa-user-circle"></i>
                                 <p>
@@ -41,9 +39,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item mb-2 @if (url()->current() == route('admin#jobList'))
-                            bg-primary rounded
-                        @endif">
+                        <li class="nav-item mb-2 @if (url()->current() == route('admin#jobList')) bg-primary rounded @endif">
                             <a href="{{ route('admin#jobList') }}" class="nav-link">
                                 <i class="fas fa-list"></i>
                                 <p>
@@ -52,9 +48,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item mb-2 @if (url()->current() == route('admin#oldJobList'))
-                            bg-primary rounded
-                        @endif">
+                        <li class="nav-item mb-2 @if (url()->current() == route('admin#oldJobList')) bg-primary rounded @endif">
                             <a href="{{ route('admin#oldJobList') }}" class="nav-link">
                                 <i class="fas fa-list"></i>
                                 <p>
@@ -63,9 +57,16 @@
                             </a>
                         </li>
 
-                        <li class="nav-item mb-2 @if (url()->current() == route('admin#employmentType'))
-                            bg-primary rounded
-                        @endif">
+                        <li class="nav-item mb-2 @if (url()->current() == route('admin#userList')) bg-primary rounded @endif">
+                            <a href="{{ route('admin#userList') }}" class="nav-link">
+                                <i class="fas fa-list"></i>
+                                <p>
+                                    List of Users
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item mb-2 @if (url()->current() == route('admin#employmentType')) bg-primary rounded @endif">
                             <a href="{{ route('admin#employmentType') }}" class="nav-link">
                                 <i class="fas fa-list"></i>
                                 <p>
@@ -117,4 +118,5 @@
     <script src="{{ asset('dist/js/demo.js') }}"></script>
 </body>
 @yield('script')
+
 </html>

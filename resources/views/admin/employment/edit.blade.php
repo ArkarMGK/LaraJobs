@@ -12,25 +12,21 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="tab-content">
-                        <div class="active tab-pane" id="activity">
-                            <form action="{{ route('admin#updateEmploymentType',$employment) }}" method="POST">
-                                @csrf
-                                <div class="p-4">
-                                    <label for="employmentType">New Employment Type</label>
-                                    {{-- NOTE. name="employment_type" to be the same value as database Attribute --}}
-                                    <input type="text" name="employmentType" id="employmentType" class="mt-4 form-control"
-                                        value="{{ old('employmentType', $employment->employment_type) }}">
-                                    @error('employmentType')
-                                        <div class="text-danger mt-2">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="p-4">
-                                    <input type="submit" value="Update" class="ms-4 btn btn-success">
-                                </div>
-                            </form>
+                    <form action="{{ route('admin#updateEmploymentType', $employment) }}" method="POST">
+                        @csrf
+                        <div class="p-4">
+                            <label for="employmentType">New Employment Type</label>
+                            {{-- NOTE. name="employment_type" to be the same value as database Attribute --}}
+                            <input type="text" name="employmentType" id="employmentType" class="mt-4 form-control"
+                                value="{{ old('employmentType', $employment->employment_type) }}">
+                            @error('employmentType')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
-                    </div>
+                        <div class="p-4">
+                            <input type="submit" value="Update" class="ms-4 btn btn-success">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

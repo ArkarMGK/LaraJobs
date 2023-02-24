@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header d-flex align-items-center">
                     <legend class="text-center">Older Jobs (Already Hired)</legend>
-                    <form action="{{ route('admin#jobList') }}" method="GET" class="d-flex">
+                    <form action="{{ route('admin#oldJobList') }}" method="GET" class="d-flex">
                         <input type="text" name="search" class="form-control" placeholder="Search"
                             value="{{ request('key') }}" type="submit">
                         <button class="btn-sm btn-primary"><i class="fas fa-search"></i></button>

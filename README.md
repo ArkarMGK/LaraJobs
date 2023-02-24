@@ -14,7 +14,12 @@ php artisan db:seed
 
 php artisan serve
 
+
+### Connect public folder to storage
+php artisan storage:link
+
 #Note
+
 After database seeding, two user accounts (admin and testuser) are already provided
 Use 'localhost:8000/admin' to log in as admin.
 

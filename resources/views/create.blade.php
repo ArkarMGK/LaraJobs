@@ -1,4 +1,4 @@
-@extends('../layouts/master');
+@extends('../layouts/master')
 @section('title', 'The official larajob board')
 @include('../partials/_navLogo')
 @section('content')

@@ -60,7 +60,7 @@ class JobListFactory extends Factory
             'title' => $this->faker->sentence(5),
             'tags' => $tag,
             'company_id' => rand(1, 5),
-            'user_id' => rand(1, 2),
+            'user_id' => 2,
             'job_location' => $this->faker->city(),
             'job_url' => $this->faker->url(),
             // 'employment_type' => $employment_type[$employment],

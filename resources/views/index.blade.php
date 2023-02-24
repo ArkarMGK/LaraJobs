@@ -1,4 +1,4 @@
-@extends('../layouts/master');
+@extends('../layouts/master')
 @section('title', 'The official larajob board')
 @include('../partials/_nav')
 @include('../partials/_hero_job')
@@ -20,9 +20,9 @@
                             $allTags = explode(',', $allTags);
                         @endphp
                         <form action="{{ route('home') }}" method="GET">
-                            <select class="form-select" aria-label="form-select-lg example" name="tags"
+                            <select class="form-select" aria-label="form-select-lg example" name="tags" placeholder="Filter"
                                 id="searchByTags">
-                                <option selected>Filter</option>
+                                <option selected disabled>Filter</option>
                                 <option value="all">All Jobs</option>
                                 @foreach ($allTags as $tag)
                                     <option value="{{ $tag }}">{{ $tag }}</option>

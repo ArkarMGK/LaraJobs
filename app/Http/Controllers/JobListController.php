@@ -15,45 +15,16 @@ use Illuminate\Support\Facades\Validator;
 
 class JobListController extends Controller
 {
+    // LANDING PAGE
     public function index()
     {
-        $jobs = JobList::select(
-            'job_lists.*',
-            'companies.name as company_name',
-            'companies.logo as logo',
-            'employments.employment_type as employment_type'
-        )
-            ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
-            ->leftJoin(
-                'employments',
-                'job_lists.employment_type_id',
-                'employments.id'
-            )
-            ->where('available', '1')
-            ->latest()
-            ->get();
-
-        $oldJobs = JobList::select(
-            'job_lists.*',
-            'companies.name as company_name',
-            'companies.logo as logo',
-            'employments.employment_type as employment_type'
-        )
-            ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
-            ->leftJoin(
-                'employments',
-                'job_lists.employment_type_id',
-                'employments.id'
-            )
-            ->where('available', '0')
-            ->latest()
-            ->get();
+        $jobs = $this->getJobs(1);
+        $oldJobs = $this->getJobs(0);
         $allTags = Tags::allTags();
-        // dd($allTags['tags']);
-        // dd($jobs->toArray());
-        return view('index', compact('jobs', 'oldJobs','allTags'));
+        return view('index', compact('jobs', 'oldJobs', 'allTags'));
     }
 
+    // CREATE PAGE
     public function create()
     {
         $allTags = Tags::allTags();
@@ -61,28 +32,21 @@ class JobListController extends Controller
         return view('create', compact('allTags', 'employments'));
     }
 
+    // USER DASHBOARD (active job)
     public function dashboard()
     {
-        $jobs = JobList::select(
-            'job_lists.*',
-            'companies.name as company_name',
-            'companies.logo as logo',
-            'employments.employment_type as employment_type'
-        )
-            ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
-            ->leftJoin(
-                'employments',
-                'job_lists.employment_type_id',
-                'employments.id'
-            )
-            ->where('job_lists.user_id', Auth::user()->id)
-            ->where('job_lists.available', '1')
-            ->latest()
-            ->get();
+        $jobs = $this->getJobs(1, Auth::user()->id);
         return view('dashboard', compact('jobs'));
     }
 
+    // USER DASHBOARD (order list)
     public function history()
+    {
+        $jobs = $this->getJobs(0, Auth::user()->id);
+        return view('dashboard', compact('jobs'));
+    }
+
+    private function getJobs($available, $userId = null)
     {
         $jobs = JobList::select(
             'job_lists.*',
@@ -95,14 +59,19 @@ class JobListController extends Controller
                 'employments',
                 'job_lists.employment_type_id',
                 'employments.id'
-            )
-            ->where('job_lists.user_id', Auth::user()->id)
-            ->where('job_lists.available', '0')
-            ->latest()
-            ->get();
-        return view('dashboard', compact('jobs'));
+            );
+        if ($userId == null) {
+            $jobs = $jobs->where('job_lists.available', $available);
+        } else {
+            $jobs = $jobs
+                ->where('job_lists.available', $available)
+                ->where('job_lists.user_id', $userId);
+        }
+        $jobs = $jobs->latest()->get();
+        return $jobs;
     }
 
+    // EDIT ACTIVE JOBS BY LOG IN USER (create/{jobId})
     public function edit($id)
     {
         $job = JobList::select(
@@ -193,14 +162,17 @@ class JobListController extends Controller
         if ($company == null) {
             $company = Company::create([
                 'name' => $companyName,
-                'email' => null,
-                'logo' => null,
-                'website' => null,
-                'location' => null,
+                'details' => 'Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                            Officia architecto reiciendis, tenetur iure unde,
+                            minima sed ut veritatis pariatur inventore esse beatae maiores
+                            fugit ullam qui nobis nulla, vel fugiat.',
             ]);
         }
         return $company->id;
     }
+
+
+    // DATA VALIDATION
     private function formValidationCheck($request)
     {
         $validationRules = [

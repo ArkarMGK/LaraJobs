@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobListController;
 use App\Http\Controllers\admin\JobsController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\ConsultantController;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\EmploymentTypeController;
 
@@ -20,6 +21,32 @@ use App\Http\Controllers\admin\EmploymentTypeController;
 |
 */
 
+// CONSULTANTS
+Route::get('/laravel-consultant', [ConsultantController::class, 'index'])->name(
+    'consultant'
+);
+
+Route::get('/laravel-consultant/subscribe', [
+    ConsultantController::class,
+    'create',
+])->name('createCompany');
+
+// Contact Company
+Route::get('/laravel-consultant/contact/{company}', [
+    ConsultantController::class,
+    'contactCompany',
+])->name('contactCompany');
+
+// Hire Project to a company
+Route::post('/hire-project', [ConsultantController::class, 'hireProject'])->name(
+    'hireProject'
+);
+
+Route::post('/createCompany', [ConsultantController::class, 'store'])->name(
+    'storeCompany'
+);
+
+//
 Route::get('/', [JobListController::class, 'index'])->name('home');
 
 // CREATE AND STORE
@@ -36,11 +63,17 @@ Route::post('/update/{id}', [JobListController::class, 'update'])->name(
     'updateJob'
 );
 
-//
+// AJAX ROUTES
 Route::get('/ajax/filterTags', [AjaxController::class, 'index'])->name(
     'filerTags'
 );
 
+Route::get('/ajax/filterCompanies', [
+    AjaxController::class,
+    'filterCompanies',
+])->name('filterCompanies');
+
+// ADMIN LOGIN
 Route::get('/admin', [AdminController::class, 'login'])
     ->name('admin#login')
     ->middleware('adminAuth');

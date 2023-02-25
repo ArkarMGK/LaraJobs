@@ -16,14 +16,14 @@ class AjaxController extends Controller
             'companies.logo as logo',
             'employments.employment_type as employment_type'
         )
-        ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
-        ->leftJoin(
-            'employments',
-            'job_lists.employment_type_id',
-            'employments.id'
-        )
-        ->where('job_lists.available','1')
-        ->latest();
+            ->leftJoin('companies', 'job_lists.company_id', 'companies.id')
+            ->leftJoin(
+                'employments',
+                'job_lists.employment_type_id',
+                'employments.id'
+            )
+            ->where('job_lists.available', '1')
+            ->latest();
         if ($request->tagName == 'all') {
             $jobs = $jobs->get();
         } else {
@@ -32,71 +32,81 @@ class AjaxController extends Controller
                 ->get();
         }
 
-        foreach($jobs as $job){
+        foreach ($jobs as $job) {
             $job->createdAt = $job->created_at->diffForHumans();
 
-            if ( $job->logo != null) {
+            if ($job->logo != null) {
                 $job->logo = asset('storage/images/logo/' . $job->logo);
             } else {
                 $job->logo = asset('images/default/logo.png');
-            };
+            }
         }
-        logger($jobs->toArray());
+        // logger($jobs->toArray());
         return $jobs;
     }
 
     public function filterCompanies(Request $request)
     {
-        // logger($request->all());
-        logger($request->data[0]);
         //  QUERY BUILDER
         $query = Company::query();
 
         $filterValues = $request->data;
 
-        if ($filterValues[0] != 'all') {
+        // logger(count($filterValues));
+        // logger($filterValues);
+
+        if ($filterValues[0] != 'all' && count($filterValues) == 1) {
+            logger('Price Range Only');
             list($min, $max) = explode('-', $filterValues[0]);
             $query
                 ->where('min_budget', '>=', $min)
                 ->where('max_budget', '<=', $max);
+        }
 
-            // ONE or MORE region
-            if (count($filterValues) > 1) {
-                $query->where('region', $filterValues[1]);
+        if ($filterValues[0] == 'all' && count($filterValues) == 1) {
+            logger('Price Range All');
+            $query->inRandomOrder()->limit(4);
+        }
 
-                while (count($filterValues) > 1) {
-                    array_shift($filterValues);
-                    logger($filterValues[0]);
-                    $query->orWhere('region', $filterValues[0]);
-                }
-
-                $query
+        if ($filterValues[0] != 'all' && count($filterValues) > 1) {
+            logger('Price Range and Region');
+            //     // ONE or MORE region
+            list($min, $max) = explode('-', $filterValues[0]);
+            $query
                     ->where('min_budget', '>=', $min)
                     ->where('max_budget', '<=', $max);
-            }
-        } else {
             if (count($filterValues) > 1) {
                 $query->where('region', $filterValues[1]);
-
+                array_shift($filterValues);
                 while (count($filterValues) > 1) {
                     array_shift($filterValues);
-                    logger($filterValues[0]);
                     $query->orWhere('region', $filterValues[0]);
                 }
-            } else {
-                $query->inRandomOrder()->limit(4);
+            }
+        }
+        if($filterValues[0] == 'all' && count($filterValues) > 1){
+            logger('Region Only');
+            if (count($filterValues) > 1) {
+                $query->where('region', $filterValues[1]);
+                array_shift($filterValues);
+                while (count($filterValues) > 1) {
+                    array_shift($filterValues);
+                    $query->orWhere('region', $filterValues[0]);
+                }
             }
         }
         $companies = $query->get();
-
-        foreach ($companies as $company) {
-            if ($company->logo != null) {
-                $company->logo = asset('storage/images/logo/' . $job->logo);
-            } else {
-                $company->logo = asset('images/default/logo.png');
+        if (count($companies) > 0) {
+            foreach ($companies as $company) {
+                if ($company->logo != null) {
+                    $company->logo = asset(
+                        'storage/images/logo/' . $company->logo
+                    );
+                } else {
+                    $company->logo = asset('images/default/logo.png');
+                }
             }
         }
-
         return $companies;
     }
 }

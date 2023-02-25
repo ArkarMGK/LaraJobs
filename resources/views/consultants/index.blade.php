@@ -24,7 +24,7 @@
                                 <option value="0-10000">Less than $10000</option>
                                 <option value="10000-25000">$10000 - $25000</option>
                                 <option value="25000-50000">$25000 - $50000</option>
-                                <option value="50000-10000">$50000 - $100000</option>
+                                <option value="50000-100000">$50000 - $100000</option>
                             </select>
                         </div>
                         <div class="form-group mt-4">
@@ -129,6 +129,7 @@
                                             <h5 class="card-title">${response[$i].name}</h5>
                                             <p class="card-text">${response[$i].details}</p>
                                             <div class="d-flex justify-content-between">
+                                                <p>Projects From : ${response[$i].min_budget }</p>
                                                 <a href="${$route}"
                                                     class="text-decoration-none contactLink">
                                                     <button class="btn btn-outline-primary"> <i
@@ -195,6 +196,7 @@
                                             <h5 class="card-title">${response[$i].name}</h5>
                                             <p class="card-text">${response[$i].details}</p>
                                             <div class="d-flex justify-content-between">
+                                                <p>Projects From : ${response[$i].min_budget }</p>
                                                 <a href="${$route}"
                                                     class="text-decoration-none contactLink">
                                                     <button class="btn btn-outline-primary"> <i

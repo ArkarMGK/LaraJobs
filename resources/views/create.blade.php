@@ -113,12 +113,16 @@
 
                                 <label for="jobTag" class="form-label">Tags</label>
                                 <div id="listOfSelectedTags" class="form-control"></div>
+
                                 <select name="jobTag" id="jobTag" class="form-select">
                                     <option disabled selected hidden></option>
-                                    @foreach ($tags as $tag)
-                                        <option value="{{ $tag }}">{{ $tag }}</option>
-                                    @endforeach
+                                    <div id="remainingTags">
+                                        @foreach ($tags as $tag)
+                                            <option value="{{ $tag }}">{{ $tag }}</option>
+                                        @endforeach
+                                    </div>
                                 </select>
+
                                 <input type="hidden" name="selectedTags" id="selectedValues">
                                 <div class="form-text">Max of five tags</div>
                                 @error('selectedTags')
@@ -219,14 +223,17 @@
                     $unSelectedTagsStr = $unSelectedTags + '';
                     console.log('remaining tags=>' + $unSelectedTagsStr);
 
-                    // $('#jobTag').html = '';
-                    // $unSelectedTagsList = '';
-                    // console.log($('#jobTag').val());
-                    // for ($j = 1; $j <= $unSelectedTags.length; $j++) {
-                    //     $unSelectedTagsList += `<option value="${$j}">${$unSelectedTags[$j]}</option>`;
-                    // }
-                    // $('#jobTag').append($unSelectedTagsList);
 
+
+                    $unSelectedTagsList = '';
+                    $unSelectedTagsList = `<option disabled selected hidden></option>`;
+                    for ($j = 0; $j < $unSelectedTags.length; $j++) {
+                        $unSelectedTagsList +=
+                            `<option value="${$unSelectedTags[$j]}">${$unSelectedTags[$j]}</option>`;
+                    };
+
+                    $('#jobTag').html('');
+                    $('#jobTag').html($unSelectedTagsList);
                 }
             })
         })

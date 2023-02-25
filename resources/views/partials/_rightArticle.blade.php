@@ -20,8 +20,7 @@
             millions of readers
         </p>
     </div>
-    <div class="border border-secondary border-bottom-2 mt-4">
-    </div>
+    <div class="border border-secondary border-bottom-2 mt-4"></div>
     <div class="email mt-4">
         <p>Emailed to 40,000+ Laravel developers</p>
     </div>

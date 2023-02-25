@@ -159,19 +159,15 @@
                     $unSelectedTagsStr = $unSelectedTags + '';
                     console.log('remaining tags=>' + $unSelectedTagsStr);
 
-                    // str.replace(rem_substring, newSubstring);
+                    $unSelectedTagsList = '';
+                    $unSelectedTagsList = `<option disabled selected hidden></option>`;
+                    for ($j = 0; $j < $unSelectedTags.length; $j++) {
+                        $unSelectedTagsList +=
+                            `<option value="${$unSelectedTags[$j]}">${$unSelectedTags[$j]}</option>`;
+                    };
 
-                    // Filter selected tags
-                    // $tags = $('#allTags').val().split(',');
-                    // $unSelectedTags = $tags.filter(v => v != $selectedTags[$i]);
-                    // $i= $i+1;
-                    // console.log('increase count '+$i);
-                    // console.log('unselected tags '+$unSelectedTags);
-
-                    // Convert unselected tags to an array
-                    // $unSelectedTagsArr = $unSelectedTags.split(',');
-                    // console.log($unSelectedTagsArr);
-
+                    $('#jobTag').html('');
+                    $('#jobTag').html($unSelectedTagsList);
 
                 }
             })

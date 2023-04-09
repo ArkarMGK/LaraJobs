@@ -45,7 +45,9 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-6">
-                        Update Password
+                        <h5>
+                            Update Password
+                        </h5>
                     </div>
                     <div class="col-lg-6">
                         <form class="form-horizontal" action="{{ route('admin#updatePassword') }}" method="POST">

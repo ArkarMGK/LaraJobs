@@ -21,8 +21,8 @@ return new class extends Migration {
             $table->string('website')->nullable();
             $table->string('location')->nullable();
             $table->string('region')->default('Europe');
-            $table->integer('min_budget')->default(30000);
-            $table->integer('max_budget')->default(60000);
+            $table->integer('min_budget')->default(25000);
+            $table->integer('max_budget')->default(50000);
             $table->timestamps();
         });
     }

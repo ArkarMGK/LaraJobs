@@ -27,6 +27,7 @@ class JobsController extends Controller
     private function getJobs($status){
 
         $status == 'active' ? $status = 1 : $status =  0;
+        // dd($status);
         $jobs = JobList::select(
             'job_lists.*',
             'companies.name as company_name',
@@ -42,15 +43,17 @@ class JobsController extends Controller
             ->when(request('search'), function ($query) {
                 $key = request('search');
                 $query
-                    ->where('job_lists.title', 'like', '%' . $key . '%')
-                    ->orWhere('job_lists.tags', 'like', '%' . $key . '%')
-                    ->orWhere(
-                        'job_lists.job_location',
-                        'like',
-                        '%' . $key . '%'
-                    )
-                    ->orWhere('companies.name', 'like', '%' . $key . '%')
-                    ->orWhere('employment_type', 'like', '%' . $key . '%');
+                    ->where('job_lists.tags', 'like', '%' . $key . '%')
+                    // ->orWhere('job_lists.title', 'like', '%' . $key . '%')
+                    // ->orWhere('job_lists.tags', 'like', '%' . $key . '%')
+                    // ->orWhere(
+                    //     'job_lists.job_location',
+                    //     'like',
+                    //     '%' . $key . '%'
+                    // )
+                    // ->orWhere('companies.name', 'like', '%' . $key . '%')
+                    // ->orWhere('employment_type', 'like', '%' . $key . '%')
+                    ;
             })
             ->where('available', $status)
             ->latest()

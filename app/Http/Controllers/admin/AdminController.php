@@ -72,8 +72,8 @@ class AdminController extends Controller
             User::where('id', Auth::user()->id)->update([
                 'password' => $hashedNewPassword,
             ]);
-            Auth::logout();
-            // return redirect()->route('admin#profile')->with(['message' => 'Password already Updated']);
+            // Auth::logout();
+            return redirect()->route('admin#profile')->with(['message' => 'Password already Updated']);
         }
         return back()->with([
             'message' => 'The Old Password Not Match.Try Again!',
